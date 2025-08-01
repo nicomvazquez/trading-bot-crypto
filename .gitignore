@@ -1,0 +1,19 @@
+# Entorno virtual
+env/
+venv/
+.venv/
+.env
+
+# Archivos de caché y compilación
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+
+# Archivos específicos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
+*.log
+data
