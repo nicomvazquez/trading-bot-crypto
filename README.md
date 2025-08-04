@@ -144,6 +144,8 @@ INTERVAL = "1"
 TRADE_QUANTITY = 0.001
 CHECK_INTERVAL_SECONDS = 60
 
+```
+
 ### 5. Analizar los Resultados
 
 El archivo de log (`CSV`) te permitirá analizar la evolución del balance y el PnL.  
