@@ -1,84 +1,154 @@
-[TU_PROYECTO]: Bot de Trading Algorítmico en Python
-📝 Descripción del Proyecto
-Este es un bot de trading algorítmico desarrollado en Python con un enfoque modular. El proyecto incluye un sistema de backtesting robusto para probar y validar estrategias en datos históricos antes de implementarlas en un entorno de trading en vivo. La arquitectura modular permite la rápida incorporación de nuevas estrategias e indicadores técnicos.
+# 🤖 Bot de Trading con Medias Móviles para Bybit (Python)
 
-⚙️ Cómo Funciona
-El bot está diseñado para operar en un ciclo continuo, aunque actualmente se enfoca en la simulación de backtesting. Su flujo de trabajo principal es el siguiente:
+Este es un bot de trading automatizado desarrollado en Python que opera en la plataforma Bybit capaz de usar distintos tipos de estrategias.
 
-Obtención de Datos Históricos: El backtester carga datos de velas históricas (OHLCV) desde un archivo CSV.
+## 🚀 Características Principales
 
-Análisis de Estrategia: Para cada vela en el historial, el bot analiza los datos y ejecuta una estrategia específica (ej. cruce de Medias Móviles, RSI) para generar una señal de trading (BUY, SELL, HOLD, WAIT).
+* **Integración con Bybit:** Se conecta a la API unificada de Bybit para obtener datos de mercado (velas), gestionar posiciones y ejecutar órdenes de compra/venta/cierre.
+* **Registro Detallado (Logging):** Registra cada operación (apertura, cierre) en un archivo CSV fácil de leer. Se genera un nuevo archivo de log por cada sesión del bot, organizado en una carpeta `data/`.
+* **Gestión de Posiciones:** Monitorea tu posición actual en Bybit y ajusta las operaciones (abrir Long/Short, cerrar y revertir) según la señal de la estrategia.
+* **Configuración Flexible:** Todos los parámetros clave (símbolo, temporalidad, cantidad de trading, periodos SMA, modo Testnet) son fácilmente configurables en un archivo `config.py`.
+* **Manejo de Errores:** Incluye un manejo básico de excepciones para reintentar operaciones y evitar fallos críticos.
 
-Simulación de Operación: Utilizando un cliente simulado (SimulatedBybitClient), el bot ejecuta la orden de trading (BUY o SELL) en función de la señal.
+## ⚙️ Requisitos
 
-Gestión de Posición y Balance: El cliente simulado gestiona el estado de la posición (abertura, cierre, reversión) y calcula el PnL (Profit and Loss) en cada operación, actualizando el balance de la cuenta simulada.
+Antes de ejecutar el bot, asegúrate de tener lo siguiente:
 
-Registro de Resultados: Cada operación significativa y el resultado final del backtest se registran en un archivo CSV para su posterior análisis y visualización.
+* **Python 3.x** instalado.
+* **Cuenta en Bybit:** Puedes usar una cuenta de Testnet para pruebas (recomendado inicialmente) o una cuenta real.
+* **API Keys de Bybit:** Genera tus API keys en la configuración de tu cuenta de Bybit con los permisos necesarios (Lectura de mercado, Órdenes, Posiciones, Balance). **¡Guárdalas de forma segura y NO las compartas!**
 
-📊 Estrategias de Trading Implementadas
-El bot puede ejecutar varias estrategias, que se pueden seleccionar fácilmente cambiando la importación en backtesting/backtester.py.
 
-1. Estrategia de Medias Móviles (SMA/EMA)
-Lógica: Genera señales de BUY cuando una media móvil corta cruza por encima de una media móvil larga (cruce dorado), y SELL cuando la corta cruza por debajo de la larga (cruce de la muerte).
+3.  **Estructura de Archivos:** La organización del proyecto es modular para mantener el código limpio y escalable:
 
-2. Estrategia de Índice de Fuerza Relativa (RSI)
-Lógica: Utiliza el oscilador RSI para identificar condiciones de sobrecompra y sobreventa. Genera una señal de BUY cuando el RSI cruza por encima del nivel de sobreventa (ej. 30) y SELL cuando cruza por debajo del nivel de sobrecompra (ej. 70).
+    ```
+    tu_bot_trading/
+    ├── backtester.py                 # Motor principal para ejecutar el backtest
+    ├── config.py                     # Archivo de configuración global
+    ├── data/
+    │   ├── logs/                     # Carpeta donde se guardan los logs CSV de cada backtest
+    │   └── historical_data.csv       # Archivo con los datos históricos para el backtest
+    ├── services/
+    │   ├── __init__.py
+    │   ├── simulated_bybit_client.py  # Clase que simula la interacción con la API de Bybit
+    │   └── trade_logger.py          # Servicio para registrar las operaciones en un CSV
+    └── strategies/
+        ├── __init__.py
+        ├── simple_ma_strategy.py     # Lógica de la estrategia de Medias Móviles
+        ├── rsi_strategy.py           # Lógica de la estrategia de RSI
+        └── bollinger_bands_strategy.py # Lógica de la estrategia de Bandas de Bollinger
+    ```
 
-3. Estrategia de Bandas de Bollinger
-Lógica: Opera en función de la volatilidad. Genera señales cuando el precio de cierre cruza por encima de la banda superior (señal de SELL) o por debajo de la banda inferior (señal de BUY), anticipando un retorno a la media.
+## 🛠️ Guía de Uso del Backtester
 
-🚀 Potenciales Mejoras
-El proyecto está diseñado para ser expandido. Algunas de las mejoras planificadas incluyen:
+### 1. Pre-requisitos
 
-Gestión de Riesgos Avanzada: Implementar órdenes de Stop Loss y Take Profit dinámicas en la simulación.
+Asegúrate de tener **Python 3.x** instalado en tu sistema.
 
-Optimización de Estrategias: Utilizar librerías como Optuna o hyperopt para encontrar los parámetros óptimos para cada estrategia.
+### 2. Instalación Paso a Paso
 
-Análisis Multiestrategia: Permitir la combinación de múltiples indicadores para generar señales más confirmadas y robustas.
+1.  **Clonar el repositorio:**
+    Abre tu terminal y clona el proyecto con el siguiente comando:
+    ```bash
+    git clone [https://github.com/tu-usuario/tu-repositorio-del-bot.git](https://github.com/tu-usuario/tu-repositorio-del-bot.git)
+    cd tu-repositorio-del-bot
+    ```
 
-Integración de Trading en Vivo: Conectar el bot a una API de trading real (como la de Bybit) para operar en vivo en una cuenta de prueba (testnet).
+2.  **Configurar un entorno virtual (recomendado):**
+    Crea un entorno virtual para aislar las dependencias del proyecto y actívalo.
+    ```bash
+    python -m venv venv
+    # En Windows:
+    .\venv\Scripts\activate
+    # En macOS/Linux:
+    source venv/bin/activate
+    ```
 
-🛠️ Cómo Usar el Backtester
-Sigue estos pasos para configurar y ejecutar tu propio backtest.
+3.  **Instalar las dependencias:**
+    Con el entorno virtual activado, instala todas las librerías necesarias con el siguiente comando:
+    ```bash
+    pip install pandas pandas_ta matplotlib
+    ```
+    (Si tienes un archivo `requirements.txt`, puedes usar `pip install -r requirements.txt`).
 
-1. Configuración del Entorno
-Clonar el repositorio:
+### 3. Configuración del Proyecto
 
-Bash
+* **`config.py`**: Edita este archivo para definir los parámetros del backtest, como el capital inicial (`BACKTEST_INITIAL_CAPITAL`), el símbolo (`BACKTEST_SYMBOL`) y el nombre del archivo de datos (`BACKTEST_DATA_FILE`).
+* **`data/`**: Coloca tus datos históricos en formato CSV en esta carpeta. El archivo debe contener las columnas `Timestamp`, `Open`, `High`, `Low`, `Close`, `Volume`. El nombre del archivo debe coincidir con `BACKTEST_DATA_FILE` en `config.py`.
+* **Seleccionar Estrategia**: En el archivo `backtester.py`, asegúrate de que la línea de importación apunte a la estrategia que deseas probar. Por ejemplo, `from strategies.rsi_strategy import generate_signal`.
 
-git clone https://github.com/[TU_USUARIO]/[TU_PROYECTO].git
-cd [TU_PROYECTO]
-Crear y activar un entorno virtual:
+### 4. Ejecutar el Backtest
 
-Bash
+Una vez configurado, ejecuta el script `backtester.py` desde tu terminal:
 
-python -m venv venv
-# En Windows:
-.\venv\Scripts\activate
-# En macOS/Linux:
-source venv/bin/activate
-Instalar las dependencias:
-
-Bash
-
-pip install -r requirements.txt
-Si no tienes un requirements.txt, ejecuta:
-
-Bash
-
-pip install pandas pandas_ta python-bybit matplotlib
-2. Configuración del Proyecto
-config.py: Edita este archivo para ajustar los parámetros globales, como el símbolo de trading, la cantidad por operación, el intervalo de tiempo y el capital inicial del backtest.
-
-data/: Coloca tus archivos de datos históricos en esta carpeta. El formato debe ser un CSV con columnas como Timestamp, Open, High, Low, Close, Volume. Asegúrate de que el nombre del archivo en config.py coincida con el de tu archivo.
-
-3. Ejecutar el Backtest
-Una vez configurado, simplemente ejecuta el script del backtester desde tu terminal:
-
-Bash
-
+```bash
 python backtester.py
-4. Analizar los Resultados
-El backtester generará un archivo de log CSV en la carpeta data/logs con un nombre único (ej. backtest_log_ETHUSDT_2025-07-24_16-14-55.csv).
 
-Puedes usar este archivo para crear gráficos de crecimiento del balance en herramientas como Google Sheets, Excel o con un script de Python usando matplotlib.
+``` 
+
+
+## 🛠️ Configuración
+
+Para configurar el bot, necesitarás establecer variables de entorno y ajustar el archivo `config.py`.
+
+### 1. Configurar Variables de Entorno (¡CRÍTICO para la seguridad!)
+
+Por motivos de seguridad, tus API Keys de Bybit **NO deben estar directamente en el código**. Debes configurarlas como variables de entorno en tu sistema operativo.
+
+* **`BYBIT_API_KEY`**: Tu clave API de Bybit.
+* **`BYBIT_API_SECRET`**: Tu clave secreta API de Bybit.
+
+**Cómo configurarlas (ejemplos):**
+
+* **En Linux/macOS (para la sesión actual de terminal):**
+    ```bash
+    export BYBIT_API_KEY="tu_clave_api_aqui"
+    export BYBIT_API_SECRET="tu_secreto_api_aqui"
+    ```
+    (Para hacerlas persistentes después de cerrar la terminal, añádelas a tu archivo de configuración de shell como `.bashrc`, `.zshrc` o `.profile`.)
+
+* **En Windows (CMD - para la sesión actual):**
+    ```cmd
+    set BYBIT_API_KEY="tu_clave_api_aqui"
+    set BYBIT_API_SECRET="tu_secreto_api_aqui"
+    ```
+
+* **En Windows (PowerShell - para la sesión actual):**
+    ```powershell
+    $env:BYBIT_API_KEY="tu_clave_api_aqui"
+    $env:BYBIT_API_SECRET="tu_secreto_api_aqui"
+    ```
+    (Para hacerlas persistentes, puedes buscarlas en las "Propiedades del Sistema" -> "Variables de entorno" y agregarlas de forma permanente, o usar métodos de PowerShell para setearlas en tu perfil de usuario).
+
+**¡IMPORTANTE!** Después de configurar las variables de entorno, es posible que necesites **reiniciar tu terminal** o el IDE desde donde ejecutas el bot para que los cambios surtan efecto.
+
+### 2. Ajustar `config.py`
+
+Abre el archivo `config.py` y ajusta los siguientes parámetros. **Las API Keys serán cargadas automáticamente desde las variables de entorno, por lo que NO las pondrás directamente aquí.**
+
+* **`TESTNET`**: Establece `True` para operar en la red de prueba (¡ALTAMENTE RECOMENDADO para probar!) o `False` para operar con dinero real.
+* **`SYMBOL`**: El par de trading que deseas operar (ej. `"BTCUSDT"`, `"ETHUSDT"`).
+* **`INTERVAL`**: La temporalidad de las velas que usará la estrategia (ej. `"1"` para 1 minuto, `"5"` para 5 minutos, `"60"` para 1 hora). Ten en cuenta que la API de Bybit generalmente no soporta intervalos menores a 1 minuto.
+* **`TRADE_QUANTITY`**: La cantidad de la moneda base a operar en cada transacción (ej. `0.001` para BTC).
+* **`CHECK_INTERVAL_SECONDS`**: El tiempo en segundos que el bot esperará entre cada ciclo de verificación y ejecución. Esto es independiente del `INTERVAL` de las velas.
+
+**Ejemplo de `config.py` (ahora sin las claves API directamente):**
+
+```python
+# config.py
+
+# --- Configuración del Bot ---
+TESTNET = True
+SYMBOL = "BTCUSDT"
+INTERVAL = "1"
+TRADE_QUANTITY = 0.001
+CHECK_INTERVAL_SECONDS = 60
+
+### 5. Analizar los Resultados
+
+El archivo de log (`CSV`) te permitirá analizar la evolución del balance y el PnL.  
+Podés usar herramientas como:
+
+- **Google Sheets**
+- **Excel**
+- O un script en Python con `matplotlib`:
