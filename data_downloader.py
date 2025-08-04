@@ -148,7 +148,7 @@ if __name__ == "__main__":
 
     # Parámetros para la descarga: CONFIGURAR
     SYMBOL_TO_DOWNLOAD = "ETHUSDT" # Se cambió a BTCUSDT para que coincida con tu config.py
-    INTERVAL_TO_DOWNLOAD = "1" # "1" para 1 minuto. Puedes probar "5", "15", "60", etc.
+    INTERVAL_TO_DOWNLOAD = "60" # "1" para 1 minuto. Puedes probar "5", "15", "60", etc.
     START_DATE = "2023-06-01" # Formato YYYY-MM-DD (Se ajustó al ejemplo de tu config.py)
     END_DATE = "2023-12-31"   # Formato YYYY-MM-DD (Se ajustó al ejemplo de tu config.py)
     

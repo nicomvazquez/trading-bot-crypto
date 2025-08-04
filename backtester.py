@@ -12,7 +12,7 @@ import config
 # Importar los servicios y la estrategia
 from services.bybit_client import SimulatedBybitClient
 from services.trade_logger import log_trade
-from strategies.single_ema_strategy import generate_signal
+from strategies.rsi_strategy import generate_signal
 
 def run_backtest():
     """

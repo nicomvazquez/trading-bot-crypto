@@ -9,7 +9,7 @@ SYMBOL = "BTCUSDT"
 INTERVAL = 1
 CHECK_INTERVAL_SECONDS = 60 # O el valor que prefieras, por ejemplo, 30, 120, etc.
 # Cantidad de la operación (ej. 0.001 BTC, 0.01 ETH). Ajusta según el par y el capital.
-TRADE_QUANTITY = 0.1
+TRADE_QUANTITY = 0.5
 
 # --- Configuración de Conexión a Bybit ---
 # ¡IMPORTANTE! Asegúrate de que estas variables estén configuradas en tu archivo .env
@@ -21,7 +21,7 @@ TESTNET = True
 
 # Ruta al archivo CSV con datos históricos para el backtest.
 # Asegúrate de que esta ruta sea correcta y que el archivo exista.
-HISTORICAL_DATA_FILE = "data/historical_data/ETHUSDT_1m_2023-06-01_to_2023-12-31.csv" # <--- ¡AJUSTA ESTA RUTA!
+HISTORICAL_DATA_FILE = "data/historical_data/ETHUSDT_60m_2023-06-01_to_2023-12-31.csv" # <--- ¡AJUSTA ESTA RUTA!
 # Capital inicial para la simulación del backtest.
 BACKTEST_INITIAL_CAPITAL = 10000.0 
 # Tasa de comisión por operación (ej. 0.00075 para 0.075% de taker fee en Bybit).
